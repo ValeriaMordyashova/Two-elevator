@@ -14,8 +14,9 @@ public:
 
     void pressFloorButton(int destinationFloor) {
         if (destinationFloor >= 1 && destinationFloor <= 20) {
-            std::cout << "Нажата кнопка этажа " << destinationFloor << std::endl;
-            if (destinationFloor > floor) {
+            if (destinationFloor!=floor && destinationFloor!= 15)
+                std::cout << "Нажата кнопка этажа " << destinationFloor << std::endl;
+            if (destinationFloor >= floor) {
                 state = "едет вверх";
             }
             else if (destinationFloor < floor) {
@@ -24,12 +25,8 @@ public:
             else {
                 state = "открывает двери";
             }
-            if (destinationFloor==14)
-            std::cout << "Текущий этаж: " << floor << ", состояние: " << state << std::endl;
-            else
-                std::cout << "Текущий этаж: " << floor+1 << ", состояние: " << state << std::endl;
-
             floor = destinationFloor;
+            std::cout  << "Состояние: " << state << ", текущий этаж: " << floor << std::endl;
         }
         else {
             std::cout << "Ошибка: введите корректный номер этажа (1-20)" << std::endl;
@@ -42,6 +39,10 @@ public:
         std::cout << "Текущее состояние: " << state << std::endl;
     }
 
+    void OpenDoors() {
+        state = "открывает двери";
+        cout << "Лифт "<< state<< endl;
+    }
     void pressCloseButton() {
         state = "закрывает двери";
         std::cout << "Нажата кнопка закрытия дверей" << std::endl;
@@ -49,9 +50,9 @@ public:
     }
 
     void pressDispatcherButton() {
-        state = "стоит с открытыми дверьми";
         std::cout << "Нажата кнопка вызова диспетчера" << std::endl;
-        std::cout << "Текущее состояние: " << state << std::endl;
+        std::cout << "Текущее состояние: " << state;
+        std::cout << " на этаже : " << floor << std::endl;
     }
 
     void cabinSensorMove() {
@@ -86,29 +87,34 @@ int main() {
     setlocale(LC_ALL, "Russian");
     ElevatorCabin cabin1;
     Floor floor1;
-    cout << "Действие с первым лифтом"<<endl;
+    cout << "Действие с первым лифтом" << endl;
+
     cabin1.pressDispatcherButton(); // Нажатие кнопки вызова диспетчера
     floor1.pressCallButton();       // Нажатие кнопки вызова лифта
 
+    cabin1.OpenDoors();             //Открытие дверей
+    cabin1.cabinSensorMove();       // Датчик кабины фиксирует движение между дверьми
+    cabin1.pressCloseButton();      // Нажатие кнопки закрытия дверей
+    cabin1.pressFloorButton(14);     // Нажатие кнопки этажа 14
+
     cabin1.pressOpenButton();       // Нажатие кнопки открытия дверей
     cabin1.cabinSensorMove();       // Датчик кабины фиксирует движение между дверьми
-    cabin1.pressFloorButton(14);     // Нажатие кнопки этажа 14
-    cabin1.pressCloseButton();      // Нажатие кнопки закрытия дверей
-
-    cabin1.cabinSensorMove();       // Датчик кабины фиксирует движение между дверьми
-
-    cout <<endl<< "Действие с вторым лифтом" << endl;
+    
+    cout << endl << "Действие с вторым лифтом" << endl;
     ElevatorCabin cabin2;
 
+    cabin2.pressDispatcherButton(); // Нажатие кнопки вызова диспетчера
     floor1.pressCallButton();       // Нажатие кнопки вызова лифта
+    cabin2.pressFloorButton(15);    // Нажатие кнопки этажа 15
 
-    cabin1.pressOpenButton();       // Нажатие кнопки открытия дверей
-    cabin1.cabinSensorMove();       // Датчик кабины фиксирует движение между дверьми
-    cabin1.pressFloorButton(1);     // Нажатие кнопки этажа 1
+    cabin2.OpenDoors();             //Открытие дверей
+    cabin2.cabinSensorMove();       // Датчик кабины фиксирует движение между дверьми
+    cabin2.pressCloseButton();      // Нажатие кнопки закрытия дверей
+    
+    cabin2.pressFloorButton(1);
 
-    cabin1.pressCloseButton();      // Нажатие кнопки закрытия дверей
-
-    cabin1.cabinSensorMove();       // Датчик кабины фиксирует движение между дверьми
-
+    cabin2.pressOpenButton();       // Нажатие кнопки открытия дверей
+    cabin2.cabinSensorMove();       // Датчик кабины фиксирует движение между дверьми
+    
     return 0;
 }
